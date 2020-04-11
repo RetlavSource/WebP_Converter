@@ -1,0 +1,19 @@
+{
+  "name": "webp_app_project",
+  "version": "1.0.0",
+  "description": "App for compressing images to WebP format.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js -e js,hbs",
+    "lspkg": "npm list --depth=0",
+    "lspkg-g": "npm list -g --depth=0"
+  },
+  "author": "Valter Cardoso",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "hbs": "^4.1.1"
+  }
+}

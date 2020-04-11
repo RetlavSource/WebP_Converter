@@ -1,0 +1,126 @@
+/***** Classes only for testing *****/
+.testRed {
+    background: red;
+}
+
+.testGreen {
+    background: green;
+}
+
+.testBlue {
+    background: blue;
+}
+
+.testWhite {
+    background: white;
+}
+/* -------------------- */
+
+/***** VISIBILITY class *****/
+.setInVisible {
+    display: none;
+}
+/* -------------------- */
+
+/***** WARNING class *****/
+.myWarning {
+    box-shadow: 0px 0px 8px 0px rgb(238, 0, 0);
+}
+/* -------------------- */
+
+body {
+    background: rgb(212, 229, 245);
+    background: linear-gradient(
+        0deg,
+        rgba(212, 229, 245, 1) 61%,
+        rgba(0, 123, 238, 1) 91%
+    );
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.allHeight {
+    flex-grow: 1;
+}
+
+/********** FORM elements ***********/
+.rangeText {
+    color: rgb(75, 77, 94);
+}
+
+.rangeSlider {
+    width: 100%; /* Full-width */
+}
+
+.myFileInput {
+    background: rgb(255, 255, 255);
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 123, 238, 1);
+    margin: auto;
+    margin-top: 40px;
+    display: block;
+}
+
+#warningText {
+    color: red;
+    text-align: center;
+    padding: 12px;
+}
+
+.myButton {
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 123, 238, 1);
+    margin: auto;
+    margin-top: 40px;
+    display: block;
+}
+/********** Image Overlay ***********/
+/* containerImgHeader needed to position the overlay. Adjust the width as needed */
+.containerImgHeader {
+    position: relative;
+    width: auto;
+}
+
+/* The overlay effect - lays on top of the containerImgHeader and over the image */
+.overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    transition: 0.5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 30px;
+    padding: 7px;
+    text-align: center;
+}
+
+/* When you mouse over the containerImgHeader, fade in the overlay title */
+.containerImgHeader:hover .overlay {
+    opacity: 1;
+}
+
+.img-fluid {
+    box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.43);
+}
+
+.img-404 {
+    display: block;
+    margin: auto;
+}
+
+/********** FOOTER elements ***********/
+footer {
+    color: #8898bb;
+    background: rgb(198, 214, 230);
+    border-top: 1px solid rgb(0, 123, 238, 1);
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 5px;
+}
