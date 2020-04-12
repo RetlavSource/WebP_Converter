@@ -1,4 +1,4 @@
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/RetlavSource/WebP_Converter?color=brightgreen&label=latest%20release)](https://github.com/RetlavSource/WebP_Converter/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/RetlavSource/WebP_Converter?color=brightgreen&include_prereleases&label=latest%20release&style=plastic)](https://github.com/RetlavSource/WebP_Converter/releases)
 
 # WebP Converter - Subject Project
 ![WebP Converter Info Banner](public/img/heading.png)
