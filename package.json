@@ -2,7 +2,7 @@
   "name": "webp_app_project",
   "version": "1.0.0",
   "description": "App for compressing images to WebP format.",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js -e js,hbs",
@@ -11,9 +11,21 @@
   },
   "author": "Valter Cardoso",
   "license": "ISC",
+  "homepage": "https://github.com/RetlavSource/WebP_Converter",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RetlavSource/WebP_Converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RetlavSource/WebP_Converter/issues"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "hbs": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }
