@@ -31,33 +31,60 @@ slider.oninput = function () {
 *              - para a execução
 */
 
-
+// Function for some tests
 const testEvent = (event) => {
     console.log('Test is ON!');
 };
 
+// Tests the loader and messages
+const testTheLoader = () => {
+    $('#myForm').addClass('setInVisible');
+    renderLoader();
+
+    const waiting = 500;
+    insertMessages(waiting);
+    const waitTime = getTotalMessagesTime(waiting) + (waiting * 3);
+
+    setTimeout(() => {
+        removeAllMessages();
+        $('#myForm').removeClass('setInVisible');
+    }, waitTime);
+};
+
+/**
+ * Prints all FormData values
+ * @param {FormData} formData 
+ */
+const printFormData = (formData) => {
+    formData.forEach((value, key, parent) => {
+        console.log(key + ' -> ', formData.get(key));
+    });
+};
+
 const submitForm = (event) => {
-    console.log('Submit Form!!');
+    console.log('Submited Form!!');
+
+    testTheLoader();
+    return;
 
     // const theFile = document.getElementById('myFile').files[0];
 
-    // Validate File Input
+    // Validate File Input - returns the File if valid or false if not
     const theFile = validateFileInput();
+    const formData = new FormData();
     if (!theFile) {
         console.log('No valid File!');
         return;
     } else {
         console.log('File is valid');
-        const formData = new FormData();
         formData.append('imageFile', theFile);
         formData.append('compression', $('#myRange').attr('value'));
         formData.append('windowWidth', window.innerWidth);
     };
 
 
-    formData.forEach((value, key, parent) => {
-        console.log(formData.get(key));
-    });
+    // printFormData(formData);
+    return;
 
 
 
@@ -94,7 +121,7 @@ const setWarningMessage = (message) => {
     // Set Visible the text file and add the message
     const inText = $('#warningText');
     inText.html(message);
-    inText.removeClass('setInVisible');
+    inText.removeClass('invisible');
 
     // Change the border color
     $('.myFileInput').css('box-shadow', '0px 0px 8px 0px rgb(238, 0, 0)');
@@ -106,9 +133,9 @@ const setWarningMessage = (message) => {
 const removeWarningMessage = () => {
     // Set Invisible the text file and the message
     const inText = $('#warningText');
-    // Checks if there is a class "setInVisible"
-    if(!inText.hasClass( "setInVisible" )) {
-        inText.addClass('setInVisible');
+    // Checks if there is a class "invisible"
+    if (!inText.hasClass('invisible')) {
+        inText.addClass('invisible');
     };
 
     // Change the border color
