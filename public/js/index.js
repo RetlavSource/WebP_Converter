@@ -61,7 +61,7 @@ const printFormData = (formData) => {
     });
 };
 
-const submitForm = (event) => {
+const compressFile = (event) => {
     console.log('Submited Form!!');
 
     testTheLoader();
@@ -172,10 +172,24 @@ const validateFileInput = () => {
     };
 };
 
+/**
+ * Event delegation for the button to show files after compression
+ * It submits a form that links to the files compressed
+ * @param {Event} event 
+ */
+const submitCompare = (event) => {
+    if(event.target.matches('#btnForCompare')) {
+        $('#toCompare').submit();
+    };
+};
+
 // ***** LISTENERS *****
 
 // Submit action
-$('#submitBtn').on('click', submitForm);
+$('#submitBtn').on('click', compressFile);
 
 // Checks file input
 $('#myFile').on('change', validateFileInput);
+
+// Checks input from the button to show the files after compression
+$('#messages').on('click', submitCompare);
