@@ -22,7 +22,7 @@ This is a project for the Multimedia II subject at UFP University - Portugal.
     ```
 - Then, in the same folder, run in terminal: 
     ```shell
-        npm run dev
+        npm run start
     ```
 - Open your browser in the address: `http://localhost:3000`
 
