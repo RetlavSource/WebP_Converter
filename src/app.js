@@ -5,6 +5,16 @@ const multer = require('multer');
 
 const app = express();
 
+const imageSpecs = {
+    filename: '',
+    fileExtension: '',
+    filenameWebp: '',
+    encoding: '',
+    size: 0,
+    compressionValue: 0,
+    windowWidth: 0
+};
+
 // Define multer parameters
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -108,3 +118,14 @@ app.get('*', (req, res) => {
 app.listen(3000, () => {
     console.log('Server running at http://localhost:3000');
 });
+
+// Resets the object model of the image
+const resetImageSpecs = () => {
+    imageSpecs.filename = '';
+    imageSpecs.fileExtension = '';
+    imageSpecs.filenameWebp = '';
+    imageSpecs.encoding = '';
+    imageSpecs.size = 0;
+    imageSpecs.compressionValue = 0;
+    imageSpecs.windowWidth = 0;
+};

@@ -68,16 +68,16 @@ const printFormData = (formData) => {
 const compressFile = (event) => {
     console.log('Submited Form!!');
 
-    // $('#myForm').addClass('setInVisible');
-    // renderLoader();
-
-    // const theFile = document.getElementById('myFile').files[0];
+    // Sets the input invisible and renders loader
+    $('#myForm').addClass('setInVisible');
+    renderLoader();
 
     // Validate File Input - returns the File if valid or false if not
     const theFile = validateFileInput();
     const formData = new FormData();
     if (!theFile) {
         console.log('No valid File!');
+        // NOT a valid file -> remove loader and resets the input layout
         removeLoader();
         $('#myForm').removeClass('setInVisible');
         return;
@@ -100,48 +100,36 @@ const compressFile = (event) => {
         .then(data => {
             if(data.result) {
                 console.log('Response--> ', data.result);
+                // All OK -> display the messages
+                const fileInfo = `Name: ${theFile.name}, type: ${theFile.type}, size: ${theFile.size}bytes ...`;
+                insertMessages(500, fileInfo);
             } else if (data.error) {
                 console.log('Error--> ', data.error);
+                // An ERROR happened -> remove loader and resets the input layout
+                removeLoader();
+                $('#myForm').removeClass('setInVisible');
+                setWarningMessage('ERROR01: Compression could not be completed. Try again ...');
+                return;
             } else {
                 console.log('Something went wrong!!');
+                // An ERROR happened -> remove loader and resets the input layout
+                removeLoader();
+                $('#myForm').removeClass('setInVisible');
+                setWarningMessage('ERROR02: Compression could not be completed. Try again ...');
+                return;
             }
         })
         .catch(error => {
-            console.log('Catched Error--> ', error);
+            console.log('Catched Error (fetch() error!)--> ', error);
+            // An ERROR happened -> remove loader and resets the input layout
+            removeLoader();
+            $('#myForm').removeClass('setInVisible');
+            setWarningMessage('ERROR03: Compression could not be completed. Try again ...');
+            return;
         });
-
-        console.log('Connection with server PASSED!');
     };
 
-
-    printFormData(formData);
-    return;
-
-
-
-    // Function to clear a setTimeout
-    setTimeout(() => {
-        console.log('Clearing the timeOut ...');
-        clearTimeout(timed);
-    }, 1500)
-
-    const timed = setTimeout(() => {
-        console.log('Submitting ...');
-
-        // fetch('/testapi', {
-        //     method: 'POST'
-        // })
-        // .then((response) => {
-        //     return response.text();
-        // })
-        // .then((data) => {
-        //     console.log(data);
-        // });
-
-        // $('#myForm').submit();
-    }, 2000);
-
-
+    console.log('Ready to Compare files!');
 };
 
 /**
