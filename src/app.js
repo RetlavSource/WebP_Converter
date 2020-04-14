@@ -1,8 +1,33 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const multer = require('multer');
 
 const app = express();
+
+// Define multer parameters
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/up_img');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '_' + file.originalname.replace(' ', '_'));
+    }
+});
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5000000
+    },
+    fileFilter (req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please ulpload an image document!'));
+        }
+
+        cb(null, true);
+    }
+});
+
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public');
@@ -25,10 +50,38 @@ app.use(express.static(publicDirectoryPath));
 app.get('/', (req, res) => {
     res.render('index', {
         headTitle: 'WebP Encoder',
-        scriptFile: '/js/index.js'
+        scriptFile: 'js/index.js'
     });
 });
 
+/**
+ * Uploads Images and Convert them to WebP
+ */
+app.post('/upload', upload.single('imageFile'), (req, res) => {
+    const {fileExtension, compressionValue, windowWidth} = req.body;
+    const {filename, encoding, size} = req.file;
+    console.log('File--> ', req.file);
+    console.log('Body--> ', req.body);
+    console.log('NEEDED => ', fileExtension, compressionValue, windowWidth, filename, encoding, size);
+    res.json({result: 'Success!!'});
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message}); // Handle error thrown by new Error
+});
+
+// WILL BE ----POST----
+app.post('/singlemagnify', (req, res) => {
+    console.log('Entered in POST!');
+    
+    res.render('singleMagnify', {
+        headTitle: 'WebP Encoder - Zoom',
+        imagePath: 'up_img/exemple2.jpg',
+        imagePathWebP: 'up_webp/exemple1_100.webp',
+        sizeWidth: 1340,
+        scriptFile: 'js/singleMagnify.js'
+    });
+});
+
+// Endpoint just for testing. Returns an json object.
 app.get('/testapi', (req, res) => {
     const objectJson = {
         aNumber: 12345,
@@ -42,26 +95,6 @@ app.get('/testapi', (req, res) => {
         ]
     };
     res.send(objectJson);
-});
-
-/**
- * Uploads Images and Convert them to WebP
- */
-app.post('/upload', (req, res) => {
-    
-});
-
-// WILL BE ----POST----
-app.post('/singlemagnify', (req, res) => {
-    console.log('Entered in POST!');
-    
-    res.render('singleMagnify', {
-        headTitle: 'WebP Encoder - Zoom',
-        imagePath: '/up_img/exemple2.jpg',
-        imagePathWebP: '/up_webp/exemple1_100.webp',
-        sizeWidth: 1340,
-        scriptFile: '/js/singleMagnify.js'
-    });
 });
 
 // Matches all other routes (404 NOT FOUND ERROR)

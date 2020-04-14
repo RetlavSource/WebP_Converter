@@ -61,11 +61,15 @@ const printFormData = (formData) => {
     });
 };
 
+/**
+ * Submits the file for compression and returns confirmation on compression result
+ * @param {Event} event 
+ */
 const compressFile = (event) => {
     console.log('Submited Form!!');
 
-    testTheLoader();
-    return;
+    // $('#myForm').addClass('setInVisible');
+    // renderLoader();
 
     // const theFile = document.getElementById('myFile').files[0];
 
@@ -74,16 +78,43 @@ const compressFile = (event) => {
     const formData = new FormData();
     if (!theFile) {
         console.log('No valid File!');
+        removeLoader();
+        $('#myForm').removeClass('setInVisible');
         return;
     } else {
         console.log('File is valid');
         formData.append('imageFile', theFile);
-        formData.append('compression', $('#myRange').attr('value'));
+        formData.append('fileExtension', fileExtension(theFile.name));
+        formData.append('compressionValue', $('#myRange').attr('value'));
         formData.append('windowWidth', window.innerWidth);
+
+        // Can NOT BE SET -> headers: {'Content-Type': 'multipart/form-data'}
+        // Gives error -> {error: "Multipart: Boundary not found"}
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if(data.result) {
+                console.log('Response--> ', data.result);
+            } else if (data.error) {
+                console.log('Error--> ', data.error);
+            } else {
+                console.log('Something went wrong!!');
+            }
+        })
+        .catch(error => {
+            console.log('Catched Error--> ', error);
+        });
+
+        console.log('Connection with server PASSED!');
     };
 
 
-    // printFormData(formData);
+    printFormData(formData);
     return;
 
 
@@ -143,6 +174,15 @@ const removeWarningMessage = () => {
 };
 
 /**
+ * Accepts a file name and returns the extension as a string
+ * @param {String} fileName 
+ */
+const fileExtension = (fileName) => {
+    const sections = fileName.split('.');
+    return sections[sections.length - 1];
+};
+
+/**
  * Validates the File Input field.
  *  If NOT valid - Adds a warning message and change border color.
  *  If VALID - Removes the warning message and change border color to default.
@@ -152,6 +192,12 @@ const removeWarningMessage = () => {
 const validateFileInput = () => {
     // const theFile = document.getElementById('myFile').files[0];
     const theFile = $('#myFile')[0].files[0];
+    let extension = '';
+    try {
+        extension = fileExtension(theFile.name);
+    } catch (error) {
+        return false;
+    }
 
     if (!theFile) { // theFile === undefined (not exists)
         console.log('No file chosen!');
@@ -162,6 +208,9 @@ const validateFileInput = () => {
         return false;
     } else if (theFile.name === '' || theFile === null) {
         setWarningMessage('Please chose an Image File!');
+        return false;
+    } else if (extension !== 'jpeg' && extension !== 'jpg' && extension !== 'png') {
+        setWarningMessage('The file must have an Image Extension (.jpeg/.png)!');
         return false;
     } else if (theFile.size > 5000000 || theFile.size === 0) {
         setWarningMessage('The Image File is too big (Max = 5Mb)!');
@@ -178,7 +227,7 @@ const validateFileInput = () => {
  * @param {Event} event 
  */
 const submitCompare = (event) => {
-    if(event.target.matches('#btnForCompare')) {
+    if (event.target.matches('#btnForCompare')) {
         $('#toCompare').submit();
     };
 };
