@@ -129,7 +129,7 @@ const compressFile = (event) => {
         });
     };
 
-    console.log('Ready to Compare files!');
+    console.log('Passed fetch() API!');
 };
 
 /**

@@ -8,9 +8,10 @@ const app = express();
 const imageSpecs = {
     filename: '',
     fileExtension: '',
-    filenameWebp: '',
+    mimetype: '',
     encoding: '',
     size: 0,
+    filenameWebp: '',
     compressionValue: 0,
     windowWidth: 0
 };
@@ -58,6 +59,7 @@ app.use(express.static(publicDirectoryPath));
  *  - scriptFile
  */
 app.get('/', (req, res) => {
+    resetImageSpecs();
     res.render('index', {
         headTitle: 'WebP Encoder',
         scriptFile: 'js/index.js'
@@ -68,11 +70,20 @@ app.get('/', (req, res) => {
  * Uploads Images and Convert them to WebP
  */
 app.post('/upload', upload.single('imageFile'), (req, res) => {
-    const {fileExtension, compressionValue, windowWidth} = req.body;
-    const {filename, encoding, size} = req.file;
-    console.log('File--> ', req.file);
-    console.log('Body--> ', req.body);
-    console.log('NEEDED => ', fileExtension, compressionValue, windowWidth, filename, encoding, size);
+    imageSpecs.filename = req.file.filename;
+    imageSpecs.fileExtension = req.body.fileExtension;
+    imageSpecs.mimetype = req.file.mimetype;
+    imageSpecs.encoding = req.file.encoding;
+    imageSpecs.size = req.file.size;
+    imageSpecs.filenameWebp = '';
+    imageSpecs.compressionValue = parseInt(req.body.compressionValue, 10);
+    imageSpecs.windowWidth = parseInt(req.body.windowWidth, 10);
+    console.log(imageSpecs);
+    // const {fileExtension, compressionValue, windowWidth} = req.body;
+    // const {filename, encoding, size} = req.file;
+    // console.log('File--> ', req.file);
+    // console.log('Body--> ', req.body);
+    // console.log('NEEDED => ', fileExtension, compressionValue, windowWidth, filename, encoding, size);
     res.json({result: 'Success!!'});
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message}); // Handle error thrown by new Error
@@ -123,9 +134,10 @@ app.listen(3000, () => {
 const resetImageSpecs = () => {
     imageSpecs.filename = '';
     imageSpecs.fileExtension = '';
-    imageSpecs.filenameWebp = '';
+    imageSpecs.mimetype = '';
     imageSpecs.encoding = '';
     imageSpecs.size = 0;
+    imageSpecs.filenameWebp = '';
     imageSpecs.compressionValue = 0;
     imageSpecs.windowWidth = 0;
 };
