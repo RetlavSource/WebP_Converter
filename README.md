@@ -8,8 +8,10 @@ This is a project for the Multimedia II subject at UFP University - Portugal.
 ---
 
 ### Features
-- Converts *`.jpeg`* and *`.png`* in to *`.webp`* format.
-- Ability to select the compression value.
+- Converts *`.jpeg`*, *`.jpg`* and *`.png`* in to *`.webp`* format.
+- Ability to select the quality of the image.
+- Image info: *name, type* and *size*
+- Directs to a page where you can view the image in detail, with the help of a digital magnifying glass
 
 ---
 
