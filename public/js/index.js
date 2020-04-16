@@ -85,7 +85,7 @@ const compressFile = (event) => {
         console.log('File is valid');
         formData.append('imageFile', theFile);
         formData.append('fileExtension', fileExtension(theFile.name));
-        formData.append('compressionValue', $('#myRange').attr('value'));
+        formData.append('compressionValue', slider.value);
         formData.append('windowWidth', window.innerWidth);
 
         // Can NOT BE SET -> headers: {'Content-Type': 'multipart/form-data'}
@@ -191,7 +191,7 @@ const validateFileInput = () => {
         console.log('No file chosen!');
         setWarningMessage('Please select an Image File!');
         return false;
-    } else if (theFile.type !== 'image/jpeg' && theFile.type !== 'image/png') {
+    } else if (theFile.type !== 'image/jpeg' && theFile.type !== 'image/png' && theFile.type !== 'image/jpg') {
         setWarningMessage('The file must be an Image File (.jpeg/.png)!');
         return false;
     } else if (theFile.name === '' || theFile === null) {

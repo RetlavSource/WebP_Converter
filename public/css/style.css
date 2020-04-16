@@ -48,9 +48,13 @@ body {
 }
 
 /********** FORM elements ***********/
-.rangeText {
+.rangeText, .rangeText1 {
     color: rgb(75, 77, 94);
     font-family: 'Comic Neue', sans-serif;
+}
+
+.rangeText1 {
+    margin-top: -40px;
 }
 
 .rangeSlider {

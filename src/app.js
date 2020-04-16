@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
 const multer = require('multer');
+const utils = require('./utils');
 
 const app = express();
 
@@ -34,6 +35,9 @@ const upload = multer({
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
             return cb(new Error('Please ulpload an image document!'));
         }
+        if (!file.mimetype.match(/^image\/(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please ulpload an image document!'));
+        }
 
         cb(null, true);
     }
@@ -53,13 +57,14 @@ hbs.registerPartials(partialsPath);
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
+
 /**
  * Always pass:
  *  - headTitle
  *  - scriptFile
  */
 app.get('/', (req, res) => {
-    resetImageSpecs();
+    utils.resetImageSpecs(imageSpecs);
     res.render('index', {
         headTitle: 'WebP Encoder',
         scriptFile: 'js/index.js'
@@ -70,20 +75,9 @@ app.get('/', (req, res) => {
  * Uploads Images and Convert them to WebP
  */
 app.post('/upload', upload.single('imageFile'), (req, res) => {
-    imageSpecs.filename = req.file.filename;
-    imageSpecs.fileExtension = req.body.fileExtension;
-    imageSpecs.mimetype = req.file.mimetype;
-    imageSpecs.encoding = req.file.encoding;
-    imageSpecs.size = req.file.size;
-    imageSpecs.filenameWebp = '';
-    imageSpecs.compressionValue = parseInt(req.body.compressionValue, 10);
-    imageSpecs.windowWidth = parseInt(req.body.windowWidth, 10);
+    utils.getImageSpecs(imageSpecs, req.file, req.body);
     console.log(imageSpecs);
-    // const {fileExtension, compressionValue, windowWidth} = req.body;
-    // const {filename, encoding, size} = req.file;
-    // console.log('File--> ', req.file);
-    // console.log('Body--> ', req.body);
-    // console.log('NEEDED => ', fileExtension, compressionValue, windowWidth, filename, encoding, size);
+    
     res.json({result: 'Success!!'});
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message}); // Handle error thrown by new Error
@@ -129,15 +123,3 @@ app.get('*', (req, res) => {
 app.listen(3000, () => {
     console.log('Server running at http://localhost:3000');
 });
-
-// Resets the object model of the image
-const resetImageSpecs = () => {
-    imageSpecs.filename = '';
-    imageSpecs.fileExtension = '';
-    imageSpecs.mimetype = '';
-    imageSpecs.encoding = '';
-    imageSpecs.size = 0;
-    imageSpecs.filenameWebp = '';
-    imageSpecs.compressionValue = 0;
-    imageSpecs.windowWidth = 0;
-};
