@@ -12,7 +12,10 @@ const imageSpecs = {
     mimetype: '',
     encoding: '',
     size: 0,
+    imageHight: 0,
+    imageWidth: 0,
     filenameWebp: '',
+    webpSize: 0,
     compressionValue: 0,
     windowWidth: 0
 };
@@ -76,7 +79,8 @@ app.get('/', (req, res) => {
  */
 app.post('/upload', upload.single('imageFile'), (req, res) => {
     utils.getImageSpecs(imageSpecs, req.file, req.body);
-    console.log(imageSpecs);
+
+    utils.convertFilesLossy(imageSpecs);
     
     res.json({result: 'Success!!'});
 }, (error, req, res, next) => {
@@ -89,11 +93,18 @@ app.post('/singlemagnify', (req, res) => {
     
     res.render('singleMagnify', {
         headTitle: 'WebP Encoder - Zoom',
-        imagePath: 'up_img/exemple2.jpg',
-        imagePathWebP: 'up_webp/exemple1_100.webp',
-        sizeWidth: 1340,
+        imagePath: `up_img/${imageSpecs.filename}`,
+        imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
+        sizeWidth: (imageSpecs.windowWidth-100) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth-100,
         scriptFile: 'js/singleMagnify.js'
     });
+    // res.render('singleMagnify', {
+    //     headTitle: 'WebP Encoder - Zoom',
+    //     imagePath: 'up_img/exemple2.jpg',
+    //     imagePathWebP: 'up_webp/exemple1_100.webp',
+    //     sizeWidth: 1340,
+    //     scriptFile: 'js/singleMagnify.js'
+    // });
 });
 
 // Endpoint just for testing. Returns an json object.
