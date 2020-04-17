@@ -88,23 +88,23 @@ app.post('/upload', upload.single('imageFile'), (req, res) => {
 });
 
 // WILL BE ----POST----
-app.post('/singlemagnify', (req, res) => {
+app.get('/singlemagnify', (req, res) => {
     console.log('Entered in POST!');
     
-    res.render('singleMagnify', {
-        headTitle: 'WebP Encoder - Zoom',
-        imagePath: `up_img/${imageSpecs.filename}`,
-        imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
-        sizeWidth: (imageSpecs.windowWidth-100) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth-100,
-        scriptFile: 'js/singleMagnify.js'
-    });
     // res.render('singleMagnify', {
     //     headTitle: 'WebP Encoder - Zoom',
-    //     imagePath: 'up_img/exemple2.jpg',
-    //     imagePathWebP: 'up_webp/exemple2.webp',
-    //     sizeWidth: 1340,
+    //     imagePath: `up_img/${imageSpecs.filename}`,
+    //     imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
+    //     sizeWidth: (imageSpecs.windowWidth-100) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth-100,
     //     scriptFile: 'js/singleMagnify.js'
     // });
+    res.render('singleMagnify', {
+        headTitle: 'WebP Encoder - Zoom',
+        imagePath: 'up_img/exemple2.jpg',
+        imagePathWebP: 'up_webp/exemple2.webp',
+        sizeWidth: 1340,
+        scriptFile: 'js/singleMagnify.js'
+    });
 });
 
 // Endpoint just for testing. Returns an json object.

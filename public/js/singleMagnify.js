@@ -1,76 +1,80 @@
+// Pre search the DOM for the elements, for fast processing
+const largeImage = $(".large");
+const smallImage = $(".small");
+const magnifyZone = $(".magnify");
 
+// Some global variables used in the majority of the functions
 let native_width = 0;
 let native_height = 0;
 
-$(document).ready(function () {
-    
-    // Triggers when window resizes
-    $(window).on('resize', checkWidth);
+// Create a global image object type
+const image_object = new Image();
+image_object.src = smallImage.attr("src");
 
-    const image_object = new Image();
-    image_object.src = $(".small").attr("src");
-    native_width = 3840;//image_object.width;
-    native_height = 2400;//image_object.height;
-    $('.large').css({'background-size': native_width + 'px ' + native_height + 'px', 'background-repeat': 'no-repeat' });
-    //var native_width = 0;
-    //var native_height = 0;
 
-    $(".magnify").mousemove(function (e) {
-        if (!native_width && !native_height) {
+/**
+ * Creates the mesure sizes of the zoomed image for the specified zoom value
+ * @param {Number} zoom zoom value
+ */
+const zoomFactor = zoom => {
+    native_width = image_object.width * zoom; // 3840
+    native_height = image_object.height * zoom; // 2400
+    largeImage.css({ 'background-size': native_width + 'px ' + native_height + 'px', 'background-repeat': 'no-repeat' });
+};
 
-            //var image_object = new Image();
-            //image_object.src = $(".small").attr("src");
+/**
+ * Produces the magnfying glass over the browser image
+ * @param {Event} event event options object
+ */
+const magnifyImage = event => {
+    if (!native_width && !native_height) {
+        const strSize = largeImage.css('background-size').split(' ');
+        native_width = parseInt(strSize[0].split('px', 1));
+        native_height = parseInt(strSize[1].split('px', 1));
+    } else {
+        var magnify_offset = magnifyZone.offset();
+        var mx = event.pageX - magnify_offset.left;
+        var my = event.pageY - magnify_offset.top;
 
-            //native_width = image_object.width;
-            //native_height = image_object.height;
-            const strSize = $('.large').css('background-size').split(' ');
-            native_width = parseInt(strSize[0].split('px', 1));
-            native_height = parseInt(strSize[1].split('px', 1));
+        // To test the inputs
+        test(magnify_offset, event, mx, my, magnifyZone);
+
+        if (mx < magnifyZone.width() && my < magnifyZone.height() && mx > 0 && my > 0) {
+            largeImage.fadeIn(100);
         } else {
-            var magnify_offset = $(this).offset();
-            var mx = e.pageX - magnify_offset.left;
-            var my = e.pageY - magnify_offset.top;
-
-            // To test the inputs
-            test(magnify_offset, e, mx, my, this);
-
-            if (mx < $(this).width() && my < $(this).height() && mx > 0 && my > 0) {
-                $(".large").fadeIn(100);
-            } else {
-                $(".large").fadeOut(100);
-            }
-            if ($(".large").is(":visible")) {
-                var rx = Math.round(mx / $(".small").width() * native_width - $(".large").width() / 2) * -1;
-                var ry = Math.round(my / $(".small").height() * native_height - $(".large").height() / 2) * -1;
-                var bgp = rx + "px " + ry + "px";
-
-                var px = mx - $(".large").width() / 2;
-                var py = my - $(".large").height() / 2;
-
-                $(".large").css({ left: px, top: py, backgroundPosition: bgp });
-            }
+            largeImage.fadeOut(100);
         }
-    });
-});
+        if (largeImage.is(":visible")) {
+            var rx = Math.round(mx / smallImage.width() * native_width - largeImage.width() / 2) * -1;
+            var ry = Math.round(my / smallImage.height() * native_height - largeImage.height() / 2) * -1;
+            var bgp = rx + "px " + ry + "px";
+
+            var px = mx - largeImage.width() / 2;
+            var py = my - largeImage.height() / 2;
+
+            largeImage.css({ left: px, top: py, backgroundPosition: bgp });
+        }
+    }
+};
 
 /**
  *  Testing Parameters
  * 
  * @param {*} magnify_offset 
- * @param {*} e 
+ * @param {*} event 
  * @param {*} mx 
  * @param {*} my 
  * @param {*} thisClass 
  */
-const test = (magnify_offset, e, mx, my, thisClass) => {
+const test = (magnify_offset, event, mx, my, thisClass) => {
     console.log('======================================================================');
     console.log('native_width--> ', native_width, ' -- native_height--> ', native_height);
-    console.log('mx-> ', mx, ' = e.pageX-> ', e.pageX, ' - magnify_offset.left--> ', magnify_offset.left);
-    console.log('my-> ', my, ' = e.pageY-> ', e.pageY, ' - magnify_offset.top--> ', magnify_offset.top);
-    console.log('this-->', thisClass);
-    console.log('$(this).width()-> ', $(thisClass).width(), ' -- $(this).height()-> ', $(thisClass).height());
-    console.log('$(".large").width()-> ', $(".large").width(), ' -- $(".large").height()-> ', $(".large").height());
-    console.log('$(".large").css( "background-size" )-> ', $(".large").css("background-size"), 'TypeOf--> ', typeof ($(".large").css("background-size")));
+    console.log('mx-> ', mx, ' = event.pageX-> ', event.pageX, ' - magnify_offset.left--> ', magnify_offset.left);
+    console.log('my-> ', my, ' = event.pageY-> ', event.pageY, ' - magnify_offset.top--> ', magnify_offset.top);
+    console.log('thisClass-->', thisClass);
+    console.log('thisClass.width()-> ', thisClass.width(), ' -- thisClass.height()-> ', thisClass.height());
+    console.log('largeImage.width()-> ', largeImage.width(), ' -- largeImage.height()-> ', largeImage.height());
+    console.log('largeImage.css( "background-size" )-> ', largeImage.css("background-size"), 'TypeOf--> ', typeof (largeImage.css("background-size")));
 };
 
 /**
@@ -85,3 +89,25 @@ const checkWidth = () => {
     console.log('parent.innerWidth--> ', parent.innerWidth);
     console.log('top.innerWidth--> ', top.innerWidth);
 };
+
+
+
+// ***** LISTENERS *****
+
+/**
+ * Mouse movment over the image
+ */
+magnifyZone.mousemove(magnifyImage);
+
+/**
+ * Triggers when window resizes
+ */
+$(window).on('resize', checkWidth);
+
+/**
+ * When ALL the page elements loads
+ * Starts with a zoom factor of 1x
+ */
+$(document).ready(function () {
+    zoomFactor(1);
+});
