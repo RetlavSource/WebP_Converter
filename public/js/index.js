@@ -1,33 +1,13 @@
-// Controls the value of the slider
+/**
+ * Controls the value of the slider.
+ * Did not use jQuery, because it doesn´t have constant "oninput" readings.
+ */
 var slider = document.getElementById("myRange");
 var output = document.getElementById("valueRange");
 output.innerHTML = slider.value + '%'; // Display the default slider value
 slider.oninput = function () {  // Update the current slider value (each time you drag the slider handle)
     output.innerHTML = this.value + '%';
 }
-
-/**
-*  Estrutura da APP
-*  -- Verificar se imagem carregada é válida (através de listener) (criar função verificar)
-*      -> Se NÃO for válida: 
-*          - mudar a border em vermelho (set CSS "box-shadow: 0px 0px 8px 0px rgb(238, 0, 0)")
-*          - colocar o texto de aviso visível
-*      -> Se for válida:
-*          - mudar a border de volta para o original (set CSS "box-shadow: 0px 0px 8px 0px rgba(0, 123, 238, 1)")
-*          - colocar o texto de aviso invisível
-*  -- ANTES DE SUBMETER
-*      -> verificar se imagem carregada é válida
-*          - não válida, parar e proceder passos anteriores
-*      -> usar a api "fetch()"
-*          -> response === 200 (OK):
-*              - colocar "display: none;" no CSS da classe pai
-*              - imprimir as diversas fazes do processo WebP com "setTimeout()" (ciar div's e preencher elementos)
-*              - colocar botão em uma <form>, com a action pretendida e fazer "$('element').submit()"
-*                  - como ´so existe este botão, clicando, segue para a outra página
-*          -> response !== 200 (NOT OK):
-*              - exibir mensagem de erro a pedir para tentar novamente
-*              - para a execução
-*/
 
 // Function for some tests
 const testEvent = (event) => {

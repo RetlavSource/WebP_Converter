@@ -11,7 +11,7 @@ const imageSpecs = {
     fileExtension: '',
     mimetype: '',
     encoding: '',
-    size: 0,
+    imageSize: 0,
     imageHight: 0,
     imageWidth: 0,
     filenameWebp: '',
@@ -88,27 +88,43 @@ app.post('/upload', upload.single('imageFile'), (req, res) => {
 });
 
 // WILL BE ----POST----
-app.get('/singlemagnify', (req, res) => {
+app.post('/singlemagnify', (req, res) => {
     console.log('Entered in POST!');
-    
-    // res.render('singleMagnify', {
-    //     headTitle: 'WebP Encoder - Zoom',
-    //     imagePath: `up_img/${imageSpecs.filename}`,
-    //     imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
-    //     sizeWidth: (imageSpecs.windowWidth-100) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth-100,
-    //     scriptFile: 'js/singleMagnify.js'
-    // });
-    res.render('singleMagnify', {
-        headTitle: 'WebP Encoder - Zoom',
-        imagePath: 'up_img/exemple2.jpg',
-        imagePathWebP: 'up_webp/exemple2.webp',
-        imageHight: 1200,
-        imageWidth: 1920,
-        imageSize: utils.addCommasNumber(1716591),
-        webpSize: utils.addCommasNumber(1072150),
-        sizeWidth: 1340,
-        scriptFile: 'js/singleMagnify.js'
-    });
+    // Padding form the window browser width
+    const reduceFactor = 200;
+
+    if (imageSpecs.filename === '' || imageSpecs.filenameWebp === '') {
+        res.render('404', {
+            headTitle: '404 Page Not Found!',
+            scriptFile: ''
+        });
+    } else {
+        res.render('singleMagnify', {
+            headTitle: 'WebP Encoder - Zoom',
+            imagePath: `up_img/${imageSpecs.filename}`,
+            imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
+            imageHight: imageSpecs.imageHight,
+            imageWidth: imageSpecs.imageWidth,
+            imageSize: utils.addCommasNumber(imageSpecs.imageSize),
+            webpSize: utils.addCommasNumber(imageSpecs.webpSize),
+            sizeWidth: (imageSpecs.windowWidth - reduceFactor) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth - reduceFactor,
+            scriptFile: 'js/singleMagnify.js'
+        });
+
+
+        // Just for testing
+        // res.render('singleMagnify', {
+        //     headTitle: 'WebP Encoder - Zoom',
+        //     imagePath: 'aux_img/exemple2.jpg',
+        //     imagePathWebP: 'aux_webp/exemple2.webp',
+        //     imageHight: 1200,
+        //     imageWidth: 1920,
+        //     imageSize: utils.addCommasNumber(1716591),
+        //     webpSize: utils.addCommasNumber(1072150),
+        //     sizeWidth: 1240,
+        //     scriptFile: 'js/singleMagnify.js'
+        // });
+    }
 });
 
 // Endpoint just for testing. Returns an json object.

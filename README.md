@@ -8,10 +8,16 @@ This is a project for the Multimedia II subject at UFP University - Portugal.
 ---
 
 ### Features
-- Converts *`.jpeg`*, *`.jpg`* and *`.png`* in to *`.webp`* format.
-- Ability to select the quality of the image.
+- Converts *`.jpeg`*, *`.jpg`* and *`.png`* in to *`.webp`* format
+- Ability to select the quality of the image
 - Image info: *name, type* and *size*
+- Steps of WebP compression (*compress phases*)
 - Directs to a page where you can view the image in detail, with the help of a digital magnifying glass
+- In the image view page:
+    - *compress another* button (*home button*)
+    - slider for selecting the zoom level
+    - Information of the Original image and the WebP image
+    - zoom aplied in the 2 images always on the same spot in each of them
 
 ---
 

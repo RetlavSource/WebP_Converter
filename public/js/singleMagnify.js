@@ -1,7 +1,10 @@
 // Pre search the DOM for the elements, for fast processing
 const largeImage = $(".large1");
-const smallImage = $(".small");
-const magnifyZone = $(".magnify");
+const largeImage2 = $(".large2");
+const smallImage = $(".small1");
+const smallImage2 = $(".small2");
+const magnifyZone = $(".magnify1");
+const magnifyZone2 = $(".magnify2");
 
 // Controls the value of the ZOOM slider (update is done in listeners zone at bottom)
 var zoomSlider = document.getElementById("zoomRange");
@@ -25,6 +28,7 @@ const zoomFactor = zoom => {
     native_width = image_object.width * zoom; // 3840
     native_height = image_object.height * zoom; // 2400
     largeImage.css({ 'background-size': native_width + 'px ' + native_height + 'px', 'background-repeat': 'no-repeat' });
+    largeImage2.css({ 'background-size': native_width + 'px ' + native_height + 'px', 'background-repeat': 'no-repeat' });
 };
 
 /**
@@ -37,19 +41,27 @@ const magnifyImage = event => {
         native_width = parseInt(strSize[0].split('px', 1));
         native_height = parseInt(strSize[1].split('px', 1));
     } else {
-        var magnify_offset = magnifyZone.offset();
+        let activeMagnifyZone;
+        if (event.target.matches('.magnify1, .magnify1 *')) {
+            activeMagnifyZone = magnifyZone;
+        } else if (event.target.matches('.magnify2, .magnify2 *')) {
+            activeMagnifyZone = magnifyZone2;
+        }
+        var magnify_offset = activeMagnifyZone.offset();
         var mx = event.pageX - magnify_offset.left;
         var my = event.pageY - magnify_offset.top;
 
         // To test the inputs
-        test(magnify_offset, event, mx, my, magnifyZone);
+        test(magnify_offset, event, mx, my, activeMagnifyZone);
 
-        if (mx < magnifyZone.width() && my < magnifyZone.height() && mx > 0 && my > 0) {
+        if (mx < activeMagnifyZone.width() && my < activeMagnifyZone.height() && mx > 0 && my > 0) {
             largeImage.fadeIn(100);
+            largeImage2.fadeIn(100);
         } else {
             largeImage.fadeOut(100);
+            largeImage2.fadeOut(100);
         }
-        if (largeImage.is(":visible")) {
+        if (largeImage.is(":visible") || largeImage2.is(":visible")) {
             var rx = Math.round(mx / smallImage.width() * native_width - largeImage.width() / 2) * -1;
             var ry = Math.round(my / smallImage.height() * native_height - largeImage.height() / 2) * -1;
             var bgp = rx + "px " + ry + "px";
@@ -58,6 +70,7 @@ const magnifyImage = event => {
             var py = my - largeImage.height() / 2;
 
             largeImage.css({ left: px, top: py, backgroundPosition: bgp });
+            largeImage2.css({ left: px, top: py, backgroundPosition: bgp });
         }
     }
 };
@@ -100,9 +113,16 @@ const checkWidth = () => {
 // ***** LISTENERS *****
 
 /**
- * Mouse movment over the image
+ * Mouse movment over the image1 (original image)
+ * (joined an exemple of mouse click, for precise compare)
  */
 magnifyZone.mousemove(magnifyImage);
+
+/**
+ * Mouse movment over the image2 (webp image)
+ * (joined an exemple of mouse click, for precise compare)
+ */
+magnifyZone2.mousemove(magnifyImage);
 
 /**
  * Triggers when window resizes
@@ -111,7 +131,8 @@ $(window).on('resize', checkWidth);
 
 /**
  * Update the current slider value (each time you drag the slider handle),
- * and calls zoomFactor for aply tthe zoom level
+ * and calls zoomFactor for aply tthe zoom level.
+ * Did not use jQuery, because it doesn´t have constant "oninput" readings
  */
 zoomSlider.oninput = function () {
     zoomOutput.innerHTML = this.value + 'x';

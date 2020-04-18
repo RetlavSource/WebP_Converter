@@ -12,7 +12,7 @@ const resetImageSpecs = imageSpecs => {
     imageSpecs.fileExtension = '';
     imageSpecs.mimetype = '';
     imageSpecs.encoding = '';
-    imageSpecs.size = 0;
+    imageSpecs.imageSize = 0;
     imageSpecs.imageHight = 0;
     imageSpecs.imageWidth = 0;
     imageSpecs.filenameWebp = '';
@@ -32,7 +32,7 @@ const getImageSpecs = (imageSpecs, file, body) => {
     imageSpecs.fileExtension = body.fileExtension;
     imageSpecs.mimetype = file.mimetype;
     imageSpecs.encoding = file.encoding;
-    imageSpecs.size = file.size;
+    imageSpecs.imageSize = file.size;
     // Check dimensions of image
     const dimensions = sizeOf(path.join(__dirname, `../public/up_img/${file.filename}`));
     imageSpecs.imageHight = dimensions.height;
