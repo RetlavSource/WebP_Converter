@@ -1,11 +1,9 @@
-
+// Controls the value of the slider
 var slider = document.getElementById("myRange");
 var output = document.getElementById("valueRange");
-output.innerHTML = slider.value === '100' ? 'lossless' : slider.value + '%'; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function () {
-    output.innerHTML = this.value === '100' ? 'lossless' : this.value + '%';
+output.innerHTML = slider.value + '%'; // Display the default slider value
+slider.oninput = function () {  // Update the current slider value (each time you drag the slider handle)
+    output.innerHTML = this.value + '%';
 }
 
 /**
@@ -230,3 +228,20 @@ $('#myFile').on('change', validateFileInput);
 
 // Checks input from the button to show the files after compression
 $('#messages').on('click', submitCompare);
+
+/*
+// Radio button check
+function getSelected () {
+  if(document.getElementById('one').checked) {
+    document.getElementById('txtx').innerHTML = "ONE";
+  }else if(document.getElementById('two').checked) {
+    document.getElementById('txtx').innerHTML = "TWO";
+  }else if(document.getElementById('three').checked) {
+    document.getElementById('txtx').innerHTML = "THREE";
+  }else if(document.getElementById('four').checked) {
+    document.getElementById('txtx').innerHTML = "FOUR";
+  }
+}
+document.getElementById('.sel').addEventListener('click', getSelected);
+
+*/

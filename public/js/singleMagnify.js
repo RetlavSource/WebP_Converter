@@ -3,6 +3,11 @@ const largeImage = $(".large");
 const smallImage = $(".small");
 const magnifyZone = $(".magnify");
 
+// Controls the value of the ZOOM slider
+var zoomSlider = document.getElementById("zoomRange");
+var zoomOutput = document.getElementById("zoomValue");
+zoomOutput.innerHTML = zoomSlider.value + 'x'; // Display the default slider value
+
 // Some global variables used in the majority of the functions
 let native_width = 0;
 let native_height = 0;
@@ -103,6 +108,15 @@ magnifyZone.mousemove(magnifyImage);
  * Triggers when window resizes
  */
 $(window).on('resize', checkWidth);
+
+/**
+ * Update the current slider value (each time you drag the slider handle),
+ * and calls zoomFactor for aply tthe zoom level
+ */
+zoomSlider.oninput = function () {
+    zoomOutput.innerHTML = this.value + 'x';
+    zoomFactor(this.value);
+}
 
 /**
  * When ALL the page elements loads
