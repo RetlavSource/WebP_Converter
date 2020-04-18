@@ -33,28 +33,23 @@ const zoomFactor = zoom => {
 
 /**
  * Produces the magnfying glass over the browser image
- * @param {Event} event event options object
+ * @param {Event} event event object
+ * @param {*} zoomedZone class that activated the event
  */
-const magnifyImage = event => {
+const magnifyImage = (event, zoomedZone) => {
     if (!native_width && !native_height) {
         const strSize = largeImage.css('background-size').split(' ');
         native_width = parseInt(strSize[0].split('px', 1));
         native_height = parseInt(strSize[1].split('px', 1));
     } else {
-        let activeMagnifyZone;
-        if (event.target.matches('.magnify1, .magnify1 *')) {
-            activeMagnifyZone = magnifyZone;
-        } else if (event.target.matches('.magnify2, .magnify2 *')) {
-            activeMagnifyZone = magnifyZone2;
-        }
-        var magnify_offset = activeMagnifyZone.offset();
+        const magnify_offset = zoomedZone.offset();
         var mx = event.pageX - magnify_offset.left;
         var my = event.pageY - magnify_offset.top;
 
         // To test the inputs
-        test(magnify_offset, event, mx, my, activeMagnifyZone);
+        // test(magnify_offset, event, mx, my, zoomedZone);
 
-        if (mx < activeMagnifyZone.width() && my < activeMagnifyZone.height() && mx > 0 && my > 0) {
+        if (mx < zoomedZone.width() && my < zoomedZone.height() && mx > 0 && my > 0) {
             largeImage.fadeIn(100);
             largeImage2.fadeIn(100);
         } else {
@@ -116,13 +111,23 @@ const checkWidth = () => {
  * Mouse movment over the image1 (original image)
  * (joined an exemple of mouse click, for precise compare)
  */
-magnifyZone.mousemove(magnifyImage);
+// magnifyZone.mousemove(e => {
+//     magnifyImage(e, magnifyZone);
+// });
+magnifyZone.click(e => {
+    magnifyImage(e, magnifyZone);
+});
 
 /**
  * Mouse movment over the image2 (webp image)
  * (joined an exemple of mouse click, for precise compare)
  */
-magnifyZone2.mousemove(magnifyImage);
+// magnifyZone2.mousemove(e => {
+//     magnifyImage(e, magnifyZone2);
+// });
+magnifyZone2.click(e => {
+    magnifyImage(e, magnifyZone2);
+});
 
 /**
  * Triggers when window resizes
