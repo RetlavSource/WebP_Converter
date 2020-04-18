@@ -7,7 +7,7 @@ const sizeOf = require('image-size');
 /**
  * Resets the object model containing the image specs
  */
-const resetImageSpecs = (imageSpecs) => {
+const resetImageSpecs = imageSpecs => {
     imageSpecs.filename = '';
     imageSpecs.fileExtension = '';
     imageSpecs.mimetype = '';
@@ -58,7 +58,7 @@ const printAllRequest = (body, file) => {
  * Uses "imagemin" and "imageminWebp" plugin
  * @param {JSON} imageSpecs 
  */
-const convertFilesLossy = (imageSpecs) => {
+const convertFilesLossy = imageSpecs => {
     imagemin(['public/up_img/*.{jpg,png}'], {
         destination: 'public/up_webp',
         plugins: [
@@ -76,9 +76,19 @@ const convertFilesLossy = (imageSpecs) => {
     });
 };
 
+/**
+ * Add a dot at thousand, million, billion and so far.
+ * Returns a string with the number.
+ * @param {Number} number 
+ */
+const addCommasNumber = number => {
+    return number.toLocaleString();
+};
+
 module.exports = {
     resetImageSpecs,
     getImageSpecs,
     printAllRequest,
-    convertFilesLossy
+    convertFilesLossy,
+    addCommasNumber
 }

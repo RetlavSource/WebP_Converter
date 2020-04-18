@@ -95,13 +95,28 @@ body {
 /******** END Back Button *********/
 
 .rangeText,
-.rangeText1 {
+.rangeText1,
+.imageInfo {
     color: rgb(75, 77, 94);
     font-family: "Comic Neue", sans-serif;
 }
 
 .rangeText1 {
     margin-top: -40px;
+}
+
+.imageInfo {
+    margin-top: 40px;
+    margin-bottom: -30px;
+}
+
+.allShadow {
+    box-shadow: 0px 0px 7px 3px rgba(53, 53, 53, 0.43);
+}
+
+.bld {
+    font-size: 120%;
+    font-weight: 900;
 }
 
 .rangeSlider {

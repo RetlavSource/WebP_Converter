@@ -1,9 +1,9 @@
 // Pre search the DOM for the elements, for fast processing
-const largeImage = $(".large");
+const largeImage = $(".large1");
 const smallImage = $(".small");
 const magnifyZone = $(".magnify");
 
-// Controls the value of the ZOOM slider
+// Controls the value of the ZOOM slider (update is done in listeners zone at bottom)
 var zoomSlider = document.getElementById("zoomRange");
 var zoomOutput = document.getElementById("zoomValue");
 zoomOutput.innerHTML = zoomSlider.value + 'x'; // Display the default slider value

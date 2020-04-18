@@ -102,6 +102,10 @@ app.get('/singlemagnify', (req, res) => {
         headTitle: 'WebP Encoder - Zoom',
         imagePath: 'up_img/exemple2.jpg',
         imagePathWebP: 'up_webp/exemple2.webp',
+        imageHight: 1200,
+        imageWidth: 1920,
+        imageSize: utils.addCommasNumber(1716591),
+        webpSize: utils.addCommasNumber(1072150),
         sizeWidth: 1340,
         scriptFile: 'js/singleMagnify.js'
     });
