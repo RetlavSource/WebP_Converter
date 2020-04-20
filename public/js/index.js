@@ -1,5 +1,5 @@
 /**
- * Controls the value of the slider.
+ * Controls the value of the quality slider.
  * Did not use jQuery, because it doesn´t have constant "oninput" readings.
  */
 var slider = document.getElementById("myRange");
@@ -7,6 +7,16 @@ var output = document.getElementById("valueRange");
 output.innerHTML = slider.value + '%'; // Display the default slider value
 slider.oninput = function () {  // Update the current slider value (each time you drag the slider handle)
     output.innerHTML = this.value + '%';
+}
+
+/**
+ * Controls the value of the speed slider.
+ */
+var speedSlider = document.getElementById("mySpeed");
+var speedOutput = document.getElementById("valueSpeed");
+speedOutput.innerHTML = speedSlider.value;
+speedSlider.oninput = function () {
+    speedOutput.innerHTML = this.value;
 }
 
 // Function for some tests
@@ -52,8 +62,10 @@ const compressFile = (event) => {
 
     // Validate File Input - returns the File if valid or false if not
     const theFile = validateFileInput();
+    // Validates the sliders and the target size input
+    const slidersAndTarget = validateSliderAndTargetInput();
     const formData = new FormData();
-    if (!theFile) {
+    if (!theFile || !slidersAndTarget) {
         console.log('No valid File!');
         // NOT a valid file -> remove loader and resets the input layout
         removeLoader();
@@ -64,6 +76,9 @@ const compressFile = (event) => {
         formData.append('imageFile', theFile);
         formData.append('fileExtension', fileExtension(theFile.name));
         formData.append('compressionValue', slider.value);
+        formData.append('compressionMethod', speedSlider.value);
+        formData.append('targetSize', $('#targetSize').val());
+        formData.append('isLossless', $('#compressionSwitch').is(":checked"));
         formData.append('windowWidth', window.innerWidth);
 
         // Can NOT BE SET -> headers: {'Content-Type': 'multipart/form-data'}
@@ -184,7 +199,30 @@ const validateFileInput = () => {
     } else {
         removeWarningMessage();
         return theFile;
-    };
+    }
+};
+
+/**
+ * Validates the range sliders and the target size inputs.
+ * 
+ * Return a Boolean: true if all OK, and false if all NOT OK
+ */
+const validateSliderAndTargetInput = () => {
+    if (slider.value < 0 || slider.value > 100) {
+        return false;
+    }
+
+    if (speedSlider.value < 0 || speedSlider.value > 6) {
+        return false;
+    }
+
+    if ($('#targetSize').val() > 5000000) {
+        $('#targetSize').val('5000000');
+    } else if ($('#targetSize').val() === '' || $('#targetSize').val() < 0) {
+        $('#targetSize').val('0');
+    }
+
+    return true;
 };
 
 /**
@@ -195,7 +233,43 @@ const validateFileInput = () => {
 const submitCompare = (event) => {
     if (event.target.matches('#btnForCompare')) {
         $('#toCompare').submit();
-    };
+    }
+};
+
+/**
+ * Changes the messages for the lossy or lossless selection
+ */
+const selectTypeCompression = () => {
+
+    if ($('#compressionSwitch').is(":checked")){
+        console.log('CHECKED!');
+        $('#switchLabel').html('Lossless');
+        $('#textQuality').html('Effort in the compression');
+        $('#textQualityLeft').html('Fast/Largest');
+        $('#textQualityRight').html('Slow/Smallest');
+    } else {
+        console.log('UNCHECKED!');
+        $('#switchLabel').html('Lossy');
+        $('#textQuality').html('Quality of the image');
+        $('#textQualityLeft').html('Low/Smallest');
+        $('#textQualityRight').html('High/Largest');
+    }
+};
+
+/**
+ * Checks the input values of the target size file
+ * Modifies the input values if they are not correct
+ */
+const controlsTargetSize = () => {
+    const max = 5000000;
+    const min = 0;
+    const val = $('#targetSize').val();
+    // val is a string, and the compare (>,<,=) makes type-coersion
+    if (val > max) {
+        $('#targetSize').val(max);
+    } else if (val < min) {
+        $('#targetSize').val(min);
+    }
 };
 
 // ***** LISTENERS *****
@@ -209,19 +283,8 @@ $('#myFile').on('change', validateFileInput);
 // Checks input from the button to show the files after compression
 $('#messages').on('click', submitCompare);
 
-/*
-// Radio button check
-function getSelected () {
-  if(document.getElementById('one').checked) {
-    document.getElementById('txtx').innerHTML = "ONE";
-  }else if(document.getElementById('two').checked) {
-    document.getElementById('txtx').innerHTML = "TWO";
-  }else if(document.getElementById('three').checked) {
-    document.getElementById('txtx').innerHTML = "THREE";
-  }else if(document.getElementById('four').checked) {
-    document.getElementById('txtx').innerHTML = "FOUR";
-  }
-}
-document.getElementById('.sel').addEventListener('click', getSelected);
+// Checks 
+$('#compressionSwitch').on('change', selectTypeCompression);
 
-*/
+// Controls input values of the target file size
+$('#targetSize').on('input', controlsTargetSize);

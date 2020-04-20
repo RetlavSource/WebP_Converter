@@ -17,6 +17,9 @@ const imageSpecs = {
     filenameWebp: '',
     webpSize: 0,
     compressionValue: 0,
+    compressionMethod: 0,
+    targetSize: 0,
+    isLossless: false,
     windowWidth: 0
 };
 
@@ -62,9 +65,7 @@ app.use(express.static(publicDirectoryPath));
 
 
 /**
- * Always pass:
- *  - headTitle
- *  - scriptFile
+ * Clears the object and returns the Home Page
  */
 app.get('/', (req, res) => {
     utils.resetImageSpecs(imageSpecs);
@@ -77,54 +78,75 @@ app.get('/', (req, res) => {
 /**
  * Uploads Images and Convert them to WebP
  */
-app.post('/upload', upload.single('imageFile'), (req, res) => {
+app.post('/upload', upload.single('imageFile'), async (req, res) => {
     utils.getImageSpecs(imageSpecs, req.file, req.body);
 
-    utils.convertFilesLossy(imageSpecs);
+    try {
+        await utils.convertFilesImageminWebp(imageSpecs);
+        res.json({result: 'Success!!'});
+    } catch (error) {
+        res.status(400).send({error: 'Compressing Problem!'});
+    }
     
-    res.json({result: 'Success!!'});
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message}); // Handle error thrown by new Error
 });
 
-// WILL BE ----POST----
-app.get('/singlemagnify', (req, res) => {
+// ----POST---- (GET just for testing)
+/**
+ * Returns the zoom page, builded from a handlebars template
+ */
+app.post('/singlemagnify', (req, res) => {
     console.log('Entered in POST!');
     // Padding form the window browser width
     const reduceFactor = 200;
 
-    if (false) {
-    // if (imageSpecs.filename === '' || imageSpecs.filenameWebp === '') {
+    // if (false) {
+    if (imageSpecs.filename === '' || imageSpecs.filenameWebp === '') {
         res.render('404', {
             headTitle: '404 Page Not Found!',
             scriptFile: ''
         });
     } else {
-        // res.render('singleMagnify', {
-        //     headTitle: 'WebP Encoder - Zoom',
-        //     imagePath: `up_img/${imageSpecs.filename}`,
-        //     imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
-        //     imageHight: imageSpecs.imageHight,
-        //     imageWidth: imageSpecs.imageWidth,
-        //     imageSize: utils.addCommasNumber(imageSpecs.imageSize),
-        //     webpSize: utils.addCommasNumber(imageSpecs.webpSize),
-        //     sizeWidth: (imageSpecs.windowWidth - reduceFactor) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth - reduceFactor,
-        //     scriptFile: 'js/singleMagnify.js'
-        // });
+        let quality = ''
+        if (imageSpecs.isLossless === true) {
+            quality = 'effort';
+        } else {
+            quality = 'quality';
+        }
+        res.render('singleMagnify', {
+            headTitle: 'WebP Encoder - Zoom',
+            imagePath: `up_img/${imageSpecs.filename}`,
+            imagePathWebP: `up_webp/${imageSpecs.filenameWebp}`,
+            imageHight: imageSpecs.imageHight,
+            imageWidth: imageSpecs.imageWidth,
+            imageSize: utils.addCommasNumber(imageSpecs.imageSize),
+            webpSize: utils.addCommasNumber(imageSpecs.webpSize),
+            sizeWidth: (imageSpecs.windowWidth - reduceFactor) > imageSpecs.imageWidth ? imageSpecs.imageWidth : imageSpecs.windowWidth - reduceFactor,
+            isLossless: imageSpecs.isLossless === true ? 'lossless' : 'lossy',
+            compressionValue: imageSpecs.isLossless === false && imageSpecs.targetSize !== 0 ? '' : `, ${quality} ${imageSpecs.compressionValue}%`,
+            compressionMethod: imageSpecs.isLossless === false && imageSpecs.targetSize !== 0 ? '' : `, speed ${imageSpecs.compressionMethod}`,
+            targetSize: imageSpecs.targetSize === 0 || imageSpecs.isLossless === true ? '' : `, target size ${utils.addCommasNumber(imageSpecs.targetSize)}bytes`,
+            scriptFile: 'js/singleMagnify.js'
+        });
 
 
         // Just for testing
-        res.render('singleMagnify', {
-            headTitle: 'WebP Encoder - Zoom',
-            imagePath: 'aux_img/exemple2.jpg',
-            imagePathWebP: 'aux_img/exemple2.webp',
-            imageHight: 1200,
-            imageWidth: 1920,
-            imageSize: utils.addCommasNumber(1716591),
-            webpSize: utils.addCommasNumber(1072150),
-            sizeWidth: 1240,
-            scriptFile: 'js/singleMagnify.js'
-        });
+        // res.render('singleMagnify', {
+        //     headTitle: 'WebP Encoder - Zoom',
+        //     imagePath: 'aux_img/exemple2.jpg',
+        //     imagePathWebP: 'aux_img/exemple2.webp',
+        //     imageHight: 1200,
+        //     imageWidth: 1920,
+        //     imageSize: utils.addCommasNumber(1716591),
+        //     webpSize: utils.addCommasNumber(1072150),
+        //     sizeWidth: 1240,
+        //     isLossless: 'lossless',
+        //     compressionValue: 95,
+        //     compressionMethod: 6,
+        //     targetSize: 950000,
+        //     scriptFile: 'js/singleMagnify.js'
+        // });
     }
 });
 

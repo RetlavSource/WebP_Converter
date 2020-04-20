@@ -35,7 +35,7 @@
                         <h4 class="text-center rangeText" id="zoomValue">1x</h4>
                         
                         {{!-- IMAGE 1 (original image) --}}
-                        <h4 class="text-center imageInfo"><span class="bld">Original: </span>height {{imageHight}}px, width {{imageWidth}}px, size {{imageSize}}bytes </h4>
+                        <h5 class="text-center imageInfo"><span class="bld">Original: </span>height {{imageHight}}px, width {{imageWidth}}px, size {{imageSize}}bytes </h5>
                         <div class="magnify1">
                             <div class="large1">
 
@@ -45,7 +45,8 @@
 
 
                         {{!-- IMAGE 2 (webp image) --}}
-                        <h4 class="text-center imageInfo"><span class="bld">WebP: </span>height {{imageHight}}px, width {{imageWidth}}px, size {{webpSize}}bytes </h4>
+                        <h5 class="text-center imageInfo"><span class="bld">WebP: </span>height {{imageHight}}px, width {{imageWidth}}px, size {{webpSize}}bytes </h5>
+                        <h5 class="text-center imageInfo"><span class="bld">Options Used: {{isLossless}}</span>{{compressionValue}}{{compressionMethod}}{{targetSize}}</h5>
                         <div class="magnify2">
                             <div class="large2">
 

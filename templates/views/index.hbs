@@ -24,15 +24,58 @@
                     
                     <div class="col-md-6 offset-md-3">
                         <div class="" id="myForm">
-                            <h3 class="text-center rangeText">Select the quality level of the WebP image</h3>
-                            <input type="range" class="rangeSlider" min="0" max="100" value="50" step="5" id="myRange">
-                            <p class="text-left rangeText">Lowest</p>
-                            <p class="text-right rangeText1">Highest</p>
-                            <h4 class="text-center rangeText1" id="valueRange">50%</h4>
+
+                            <br>
+
+                            <!-- File input -->
+                            <h4 class="text-center rangeText">Select an image file (PNG/JPG/JPEG)</h4>
                             <input type="file" id="myFile" name="filename" class="myFileInput">
                             <p id="warningText" class="invisible">Select the correct file!</p>
+                            
+                            <!-- Lossless check -->
+                            <div class="switchForm">
+                                <label class="switch">
+                                    <input type="checkbox" id="compressionSwitch">
+                                    <span class="slider round"></span>
+                                </label>
+                                <h4 id="switchLabel">Lossy</h4>
+                            </div>
+
+                            <br>
+
+                            <!-- Quality select -->
+                            <h4 class="text-center rangeText" id="textQuality">Quality of the image</h4>
+                            <input type="range" class="rangeSlider" min="0" max="100" value="50" step="5" id="myRange">
+                            <p class="text-left rangeText" id="textQualityLeft">Low/Smallest</p>
+                            <p class="text-right rangeText1" id="textQualityRight">High/Largest</p>
+                            <h4 class="text-center rangeText1" id="valueRange">50%</h4>
+                            
+                            <br>
+                            <br>
+
+                            <!-- Speed select -->
+                            <h4 class="text-center rangeText">Quality/Speed Trade-Off</h4>
+                            <input type="range" class="rangeSlider2" min="0" max="6" value="3" step="1" id="mySpeed">
+                            <p class="text-left rangeText textSpeed1">Fast</p>
+                            <p class="text-right rangeText1 textSpeed2">Slow/Better</p>
+                            <h4 class="text-center rangeText1" id="valueSpeed">3</h4>
+
+                            <!-- Target Size select -->
+                            <div class="input-group mb-3 targetSizeForm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Target Size</span>
+                                </div>
+                                <input type="number" class="form-control" aria-label="Target File Size in bytes" placeholder="max 5000000" id="targetSize">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">bytes</span>
+                                </div>
+                            </div>
+
+                            <!-- Compress button -->
                             <input type="button" class="btn btn-outline-primary myButton" value="Compress" id="submitBtn">
+                        
                         </div>
+
 
                         <div id="messages">
                             

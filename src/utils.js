@@ -18,6 +18,9 @@ const resetImageSpecs = imageSpecs => {
     imageSpecs.filenameWebp = '';
     imageSpecs.webpSize = 0;
     imageSpecs.compressionValue = 0;
+    imageSpecs.compressionMethod = 0;
+    imageSpecs.targetSize = 0;
+    imageSpecs.isLossless = false;
     imageSpecs.windowWidth = 0;
 };
 
@@ -39,6 +42,9 @@ const getImageSpecs = (imageSpecs, file, body) => {
     imageSpecs.imageWidth = dimensions.width;
     imageSpecs.filenameWebp = file.filename.replace(/\.(jpg|jpeg|png)$/, `_${body.compressionValue}.webp`);
     imageSpecs.compressionValue = parseInt(body.compressionValue, 10);
+    imageSpecs.compressionMethod = parseInt(body.compressionMethod, 10);
+    imageSpecs.targetSize = parseInt(body.targetSize, 10);
+    imageSpecs.isLossless = body.isLossless === 'true';
     imageSpecs.windowWidth = parseInt(body.windowWidth, 10);
 };
 
@@ -58,22 +64,31 @@ const printAllRequest = (body, file) => {
  * Uses "imagemin" and "imageminWebp" plugin
  * @param {JSON} imageSpecs 
  */
-const convertFilesLossy = imageSpecs => {
-    imagemin(['public/up_img/*.{jpg,png}'], {
-        destination: 'public/up_webp',
-        plugins: [
-            imageminWebp({
-                quality: imageSpecs.compressionValue
-            })
-        ]
-    }).then((response) => {
+const convertFilesImageminWebp = async imageSpecs => {
+    try {
+        await imagemin([`public/up_img/${imageSpecs.filename}`], {
+            destination: 'public/up_webp',
+            plugins: [
+                imageminWebp({
+                    lossless: imageSpecs.isLossless,
+                    quality: imageSpecs.compressionValue,
+                    method: imageSpecs.compressionMethod,
+                    size: imageSpecs.targetSize
+                })
+            ]
+        });
+
+
         console.log('Images converted!');
         imageSpecs.filenameWebp = imageSpecs.filename.replace(/\.(jpg|jpeg|png)$/, '.webp');
-        fs.stat(path.join(__dirname, `../public/up_webp/${imageSpecs.filenameWebp}`), function(err, stats) {
+        fs.stat(path.join(__dirname, `../public/up_webp/${imageSpecs.filenameWebp}`), function (err, stats) {
             imageSpecs.webpSize = stats.size;
             console.log(imageSpecs);
         });
-    });
+
+    } catch (error) {
+        console.log('Encoding Image Failed !!!');
+    }
 };
 
 /**
@@ -89,6 +104,6 @@ module.exports = {
     resetImageSpecs,
     getImageSpecs,
     printAllRequest,
-    convertFilesLossy,
+    convertFilesImageminWebp,
     addCommasNumber
 }
