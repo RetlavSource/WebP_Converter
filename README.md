@@ -9,15 +9,20 @@ This is a project for the Multimedia II subject at UFP University - Portugal.
 
 ### Features
 - Converts *`.jpeg`*, *`.jpg`* and *`.png`* in to *`.webp`* format
-- Ability to select the quality of the image
+- *lossy* and *lossless* compression
+- Ability to select the *quality* of the image for *lossy* and *effort* for *lossless* compression
+- Quality/Speed trade off compression option
+- Ability to select the desire *target file size* (<u>this option takes precedence over quality and speed trade off</u>)
 - Image info: *name, type* and *size*
-- Steps of WebP compression (*compress phases*)
+- Steps of WebP compression (*compress phases*)(*incomplete!*)
 - Directs to a page where you can view the image in detail, with the help of a digital magnifying glass
 - In the image view page:
     - *compress another* button (*home button*)
-    - slider for selecting the zoom level
+    - slider for selecting the zoom level (*4x max*)
     - Information of the Original image and the WebP image
+    - Information about the options used in the WebP image compression
     - zoom aplied in the 2 images always on the same spot in each of them
+    - mouse *click* for selecting the zoom spot (before was mouse *movement* over the image, but i think *click* is best for comparing images)
 
 ---
 

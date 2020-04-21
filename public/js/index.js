@@ -247,12 +247,28 @@ const selectTypeCompression = () => {
         $('#textQuality').html('Effort in the compression');
         $('#textQualityLeft').html('Fast/Largest');
         $('#textQualityRight').html('Slow/Smallest');
+        // Clears target size input
+        if (!$('#sizeInput').hasClass('invisible')) {
+            $('#sizeInput').addClass('invisible');
+        }
+        // Checks if the quality and size sliders are visible
+        if ($('#rangeQuality').hasClass('invisible')) {
+            $('#rangeQuality').removeClass('invisible');
+            $('#infoSliders').addClass('invisible');
+            $('#rangeSize').removeClass('invisible');
+        }
     } else {
         console.log('UNCHECKED!');
         $('#switchLabel').html('Lossy');
         $('#textQuality').html('Quality of the image');
         $('#textQualityLeft').html('Low/Smallest');
         $('#textQualityRight').html('High/Largest');
+        // Inserts the target size input
+        if ($('#sizeInput').hasClass('invisible')) {
+            $('#sizeInput').removeClass('invisible');
+            // Insert '0' in target size to prevent showing the input when not '0'
+            $('#targetSize').val('');
+        }
     }
 };
 
@@ -267,8 +283,23 @@ const controlsTargetSize = () => {
     // val is a string, and the compare (>,<,=) makes type-coersion
     if (val > max) {
         $('#targetSize').val(max);
-    } else if (val < min) {
-        $('#targetSize').val(min);
+    } else if (val <= min || val === '') {
+        $('#targetSize').val('');
+    }
+
+    // Disable Range Quality and Range Size
+    if (val > 0) {
+        if (!$('#rangeQuality').hasClass('invisible')) {
+            $('#rangeQuality').addClass('invisible');
+            $('#infoSliders').removeClass('invisible');
+            $('#rangeSize').addClass('invisible');
+        }
+    } else {
+        if ($('#rangeQuality').hasClass('invisible')) {
+            $('#rangeQuality').removeClass('invisible');
+            $('#infoSliders').addClass('invisible');
+            $('#rangeSize').removeClass('invisible');
+        }
     }
 };
 

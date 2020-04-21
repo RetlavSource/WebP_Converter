@@ -44,24 +44,28 @@
                             <br>
 
                             <!-- Quality select -->
-                            <h4 class="text-center rangeText" id="textQuality">Quality of the image</h4>
-                            <input type="range" class="rangeSlider" min="0" max="100" value="50" step="5" id="myRange">
-                            <p class="text-left rangeText" id="textQualityLeft">Low/Smallest</p>
-                            <p class="text-right rangeText1" id="textQualityRight">High/Largest</p>
-                            <h4 class="text-center rangeText1" id="valueRange">50%</h4>
+                            <div class="" id="rangeQuality">
+                                <h4 class="text-center rangeText" id="textQuality">Quality of the image</h4>
+                                <input type="range" class="rangeSlider" min="0" max="100" value="50" step="5" id="myRange">
+                                <p class="text-left rangeText" id="textQualityLeft">Low/Smallest</p>
+                                <p class="text-right rangeText1" id="textQualityRight">High/Largest</p>
+                                <h4 class="text-center rangeText1" id="valueRange">50%</h4>
+                            </div>
                             
-                            <br>
+                            <h4 class="text-center rangeText invisible" id="infoSliders">Target Size takes precedence over Quality and Speed!</h4>
                             <br>
 
                             <!-- Speed select -->
-                            <h4 class="text-center rangeText">Quality/Speed Trade-Off</h4>
-                            <input type="range" class="rangeSlider2" min="0" max="6" value="3" step="1" id="mySpeed">
-                            <p class="text-left rangeText textSpeed1">Fast</p>
-                            <p class="text-right rangeText1 textSpeed2">Slow/Better</p>
-                            <h4 class="text-center rangeText1" id="valueSpeed">3</h4>
+                            <div class="" id="rangeSize">
+                                <h4 class="text-center rangeText">Quality/Speed Trade-Off</h4>
+                                <input type="range" class="rangeSlider2" min="0" max="6" value="3" step="1" id="mySpeed">
+                                <p class="text-left rangeText textSpeed1">Fast</p>
+                                <p class="text-right rangeText1 textSpeed2">Slow/Better</p>
+                                <h4 class="text-center rangeText1" id="valueSpeed">3</h4>
+                            </div>
 
                             <!-- Target Size select -->
-                            <div class="input-group mb-3 targetSizeForm">
+                            <div class="input-group mb-3 targetSizeForm" id="sizeInput" >
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Target Size</span>
                                 </div>
