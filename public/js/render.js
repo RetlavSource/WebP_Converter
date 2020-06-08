@@ -5,11 +5,11 @@ const elements = {
 // These are the messages for the different phases of the encoder
 const faseMessages = [
     'Analysing file ...',
-    'Entering compressor ...',
-    'Entering quantityser ...',
-    'Entering LZ77 encoder ...',
-    'Entering Huffman encoder ...',
-    'Entering Entropy encoder ...',
+    // 'Entering compressor ...',
+    // 'Entering quantityser ...',
+    // 'Entering LZ77 encoder ...',
+    // 'Entering Huffman encoder ...',
+    // 'Entering Entropy encoder ...',
     'Preparing images ...'
 ];
 

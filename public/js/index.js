@@ -19,6 +19,10 @@ speedSlider.oninput = function () {
     speedOutput.innerHTML = this.value;
 }
 
+// Global variable for setting the target file limit
+const targetFileLimit = 5000000;
+$('#targetSize').attr('placeholder', `max ${targetFileLimit}`);
+
 // Function for some tests
 const testEvent = (event) => {
     console.log('Test is ON!');
@@ -193,8 +197,8 @@ const validateFileInput = () => {
     } else if (extension !== 'jpeg' && extension !== 'jpg' && extension !== 'png') {
         setWarningMessage('The file must have an Image Extension (.jpeg/.png)!');
         return false;
-    } else if (theFile.size > 5000000 || theFile.size === 0) {
-        setWarningMessage('The Image File is too big (Max = 5Mb)!');
+    } else if (theFile.size > targetFileLimit || theFile.size === 0) {
+        setWarningMessage(`The Image File is too big (Max = ${targetFileLimit/1000000}Mb)!`);
         return false;
     } else {
         removeWarningMessage();
@@ -216,8 +220,8 @@ const validateSliderAndTargetInput = () => {
         return false;
     }
 
-    if ($('#targetSize').val() > 5000000) {
-        $('#targetSize').val('5000000');
+    if ($('#targetSize').val() > targetFileLimit) {
+        $('#targetSize').val(targetFileLimit);
     } else if ($('#targetSize').val() === '' || $('#targetSize').val() < 0) {
         $('#targetSize').val('0');
     }
@@ -244,7 +248,7 @@ const selectTypeCompression = () => {
     if ($('#compressionSwitch').is(":checked")){
         console.log('CHECKED!');
         $('#switchLabel').html('Lossless');
-        $('#textQuality').html('Effort in the compression');
+        $('#textQuality').html('Compression factor for RGB channels');
         $('#textQualityLeft').html('Fast/Largest');
         $('#textQualityRight').html('Slow/Smallest');
         // Clears target size input
@@ -277,12 +281,11 @@ const selectTypeCompression = () => {
  * Modifies the input values if they are not correct
  */
 const controlsTargetSize = () => {
-    const max = 5000000;
     const min = 0;
     const val = $('#targetSize').val();
     // val is a string, and the compare (>,<,=) makes type-coersion
-    if (val > max) {
-        $('#targetSize').val(max);
+    if (val > targetFileLimit) {
+        $('#targetSize').val(targetFileLimit);
     } else if (val <= min || val === '') {
         $('#targetSize').val('');
     }

@@ -30,11 +30,11 @@ This is a project for the Multimedia II subject at UFP University - Portugal.
 - Instal [Node.js](https://nodejs.org/en/download/) from the Official Site *(Prefer LTS Version)*
 - Clone the repo
 - Go to the root folder of the project and run in terminal: 
-    ```shell
+    ```js
         npm install
     ```
 - Then, in the same folder, run in terminal: 
-    ```shell
+    ```js
         npm run start
     ```
 - Open your browser in the address: `http://localhost:3000`
